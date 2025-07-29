@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>To-do-list</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: aqua;
+            }
+            #wrapper {
+                background-color: darkorange;
+                width: 400px;
+                height: 400px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+            }
+            #todolist {
+                background-color: aliceblue;
+                text-align: center;
+                height: 280px;
+                width: 300px;
+                overflow-y: auto;
+                padding: 20px;
+            }
+            #add {
+                margin-top: 10px;
+            }
+            #span
+            {
+                background-color: black;
+                color: antiquewhite;
+                margin-top: 7px;
+                
+                width: 300px;
+               
+                
+            }
+        </style>
+    </head>
+    <body>
+        <div id="wrapper">
+            <h2>TASK TO BE COMPLETED</h2>
+            <input type="text" id="input">
+            <br>
+            <button id="add">ADD TASK</button>
+            <div id="todolist">
+
+            </div>
+            <div id="span" > <span>1)click on the task to mention it as completed <br> 2)Double click to delete the task</span></div>
+        </div>
+        
+      
+        <script>
+            let btn = document.getElementById('add');
+            let todolist = document.getElementById('todolist');
+            let inp = document.getElementById('input');
+
+            let todos = [];
+            window.onload = () => {
+                todos = JSON.parse(localStorage.getItem('todos')) || [];
+                todos.forEach(todo => addtodo(todo));
+            }
+
+            btn.addEventListener('click', () => {
+                todos.push(inp.value);
+                addtodo(inp.value)
+                inp.value = ''
+            })
+
+            function addtodo(todo) {
+                let para = document.createElement('p');
+                para.innerText = todo;
+                todolist.appendChild(para);
+                localStorage.setItem('todos', JSON.stringify(todos));
+                para.addEventListener('click', () => {
+                    para.style.textDecoration = 'line-through';
+                    remove(todo)
+                })
+                para.addEventListener('dblclick', () => {
+                    todolist.removeChild(para);
+                    remove(todo);
+                })
+            }
+
+            function remove(todo) {
+                let index = todos.indexOf(todo)
+                if (index > -1) {
+                    todos.splice(index, 1)
+                }
+                localStorage.setItem('todos', JSON.stringify(todos));
+            }
+        </script>
+    </body>
+</html>
